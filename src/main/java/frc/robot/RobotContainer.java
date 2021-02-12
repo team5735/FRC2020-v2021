@@ -128,16 +128,16 @@ public class RobotContainer {
 		subsystemController.Dpad.Up.whenPressed(new RampShooterCommand(shooter, vision, banana, feeder, 3000.00));
 		subsystemController.Dpad.Down.whenPressed(new RampShooterCommand(shooter, vision, banana, feeder, 0.0));
 
-		/*
-		subsystemController.aButton.whenPressed(new TurnAndShootCommandSemiAuto(vision, drivetrain, feeder, conveyor, intakeArm , shooter, banana));
+		
+		// subsystemController.aButton.whenPressed(new TurnAndShootCommandSemiAuto(vision, drivetrain, feeder, conveyor, intakeArm , shooter, banana));
 		// subsystemController.aButton.whenPressed(new MoveBananaCommand(banana, 1000));
 		// subsystemController.bButton.whenPressed(new MoveBananaCommand(banana, 2500));
-		subsystemController.bButton.whileHeld(new WinchMoveCommand(winch));
+		// subsystemController.bButton.whileHeld(new WinchMoveCommand(winch));
 		// subsystemController.yButton.whenPressed(new MoveBananaCommand(banana, 0));
 		// subsystemController.yButton.whenPressed();
 
-		subsystemController.Dpad.Up.whileHeld(new ElevatorMoveCommand(telescope, false));
-		subsystemController.Dpad.Down.whileHeld(new ElevatorMoveCommand(telescope, true));
+		// subsystemController.Dpad.Up.whileHeld(new ElevatorMoveCommand(telescope, false));
+		// subsystemController.Dpad.Down.whileHeld(new ElevatorMoveCommand(telescope, true));
 
 		// subsystemController.Dpad.Up.whenPressed(new RampShooterCommand(shooter, banana, 3650));
 		// subsystemController.Dpad.Right.whenPressed(new RampShooterCommand(shooter, banana, RobotConstants.FLYWHEEL_PRESET_TRENCH));
@@ -150,7 +150,7 @@ public class RobotContainer {
 		subsystemController.leftTriggerButton.whileActiveContinuous(new FeedShooterCommand(feeder, shooter, true));
 		
 		subsystemController.startButton.whileActiveContinuous(new ReverseShooterCommand(shooter));
- 		*/
+ 		
 	}
 	
 	/**
