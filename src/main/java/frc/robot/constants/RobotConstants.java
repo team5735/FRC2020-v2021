@@ -93,7 +93,7 @@ public class RobotConstants {
     public static final double FLYWHEEL_kF = 0.7 / 4900.0 * 0.79;//0.78;
 
     // Drivetrain
-    public static final double kTURN_CORRECTION = 150; // Turn in in SENSOR TICKS;
+    public static final double kTURN_CORRECTION = -0.1   ; // Turn is in m/s
     public static final double TURN_TO_ANGLE_DEADBAND = 1.0;
     
     // Flywheel

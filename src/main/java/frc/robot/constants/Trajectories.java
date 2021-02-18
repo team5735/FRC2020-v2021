@@ -1,5 +1,6 @@
 package frc.robot.constants;
 
+import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.subsystems.TrajectoryGenerator;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -10,7 +11,7 @@ public class Trajectories {
     /**
      * Middle, aligned center with goal: new Waypoint(3.138, -2.45, 0)
      */
-
+/*
     public static final Trajectory[] LeftToTrench = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
         new Waypoint(3.138, -0.718, 0),
         new Waypoint(8.04, -0.718, 0)
@@ -40,6 +41,11 @@ public class Trajectories {
     public static final Trajectory[] OppColorWheelToGoal = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
         new Waypoint(6.3, -7.5, 0),
         new Waypoint(3.138, -3.454, Pathfinder.d2r(-18.5))
+    });*/
+
+    public static final Trajectory[] CurveRight1M = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
+        new Waypoint(0, 0, 0),
+        new Waypoint(1, -1, Units.degreesToRadians(-90))
     });
     
     public static final Trajectory[] MoveOneMeter = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {

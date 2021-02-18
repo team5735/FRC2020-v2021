@@ -56,6 +56,7 @@ public class DriveFollowTrajectory extends CommandBase {
 		System.out.println("========== INITIALIZING ==========");
 		
 		initial_gyro_angle = s_drivetrain.getGyroAngle();
+		System.out.println("### INIT GYRO: " + initial_gyro_angle);
 
 		if(inverted) {
 			left = new ReverseEncoderFollower(leftTraj);
@@ -87,7 +88,7 @@ public class DriveFollowTrajectory extends CommandBase {
 		
 		double gyro_heading = s_drivetrain.getGyroAngle() - initial_gyro_angle;
 		double desired_heading = Pathfinder.r2d(left.getHeading());  // Should also be in degrees
-		SmartDashboard.putNumber("Gyro Angle", gyro_heading);
+		SmartDashboard.putNumber("Gyro Heading Diff", gyro_heading);
 		// System.out.println("Heading: " + gyro_heading + " | Wanted: " + desired_heading);
 		
 		// This allows the angle difference to respect 'wrapping', where 360 and 0 are the same value

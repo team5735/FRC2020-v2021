@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.lib.controllers.BobXboxController;
 import frc.lib.util.DriveSignal;
 import frc.robot.commandgroups.SixBallAutoCommand;
@@ -128,7 +129,9 @@ public class RobotContainer {
 		subsystemController.Dpad.Up.whenPressed(new RampShooterCommand(shooter, vision, banana, feeder, 3000.00));
 		subsystemController.Dpad.Down.whenPressed(new RampShooterCommand(shooter, vision, banana, feeder, 0.0));
 
-		
+		subsystemController.aButton.whenPressed(new InstantCommand(vision::getDistanceToTarget, vision));
+		subsystemController.bButton.whenPressed(new InstantCommand(vision::disableTracking, vision));
+
 		// subsystemController.aButton.whenPressed(new TurnAndShootCommandSemiAuto(vision, drivetrain, feeder, conveyor, intakeArm , shooter, banana));
 		// subsystemController.aButton.whenPressed(new MoveBananaCommand(banana, 1000));
 		// subsystemController.bButton.whenPressed(new MoveBananaCommand(banana, 2500));
@@ -159,7 +162,8 @@ public class RobotContainer {
 	* @return the command to run in autonomous
 	*/
 	public Command getAutonomousCommand() {
-		return new DriveFollowTrajectory(drivetrain, Trajectories.MoveOneMeter[0], Trajectories.MoveOneMeter[1], false);
+		return new DriveFollowTrajectory(drivetrain, Trajectories.CurveRight1M[0], Trajectories.CurveRight1M[1], false);
+		// return new DriveFollowTrajectory(drivetrain, Trajectories.MoveOneMeter[0], Trajectories.MoveOneMeter[1], false);
 		// return new SixBallAutoCommand(vision, drivetrain, feeder, conveyor, intakeArm, shooter, banana);
 	}
 	
