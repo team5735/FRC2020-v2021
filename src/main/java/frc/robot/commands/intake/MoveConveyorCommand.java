@@ -57,6 +57,7 @@ public class MoveConveyorCommand extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		conveyor.rollConveyor(0, false);
+		feeder.feedShooter(0, false);
 		System.out.println("Conveyor MOVE COMMAND | END");
 	}
 	
