@@ -34,7 +34,7 @@ public class RobotConstants {
     public static final double ENCODER_TICKS_PER_FALCON_REV = 2048.0;
     public static final double ENCODER_TICKS_PER_DT_WHEEL_REV = ENCODER_TICKS_PER_FALCON_REV * DRIVETRAIN_GEAR_RATIO;
     public static final double ENCODER_TICKS_PER_NORMAL_WHEEL_REV = ENCODER_TICKS_PER_FALCON_REV * NORMAL_GEAR_RATIO;
-    public static final double DRIVETRAIN_TRACK_WIDTH = Units.inchesToMeters(23.5); // m
+    public static final double DRIVETRAIN_TRACK_WIDTH = Units.inchesToMeters(23.5); // 0.5969 m
     public static final double DT_WHEEL_DIAMETER = Units.inchesToMeters(6.0); // m
     public static final double NORMAL_WHEEL_DIAMETER = Units.inchesToMeters(3.25); // m
     
@@ -93,7 +93,7 @@ public class RobotConstants {
     public static final double FLYWHEEL_kF = 0.7 / 4900.0 * 0.79;//0.78;
 
     // Drivetrain
-    public static final double kTURN_CORRECTION = -0.1   ; // Turn is in m/s
+    public static final double kTURN_CORRECTION = -0.01; // Turn is in m/s
     public static final double TURN_TO_ANGLE_DEADBAND = 1.0;
     
     // Flywheel

@@ -12,6 +12,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.DriveSignal;
@@ -98,6 +100,8 @@ public class Drivetrain extends SubsystemBase{
 		leftMaster.set(controlMode, left);
 		rightMaster.set(controlMode, right);
 		normalMaster.set(controlMode, normal);
+
+		SmartDashboard.putNumber("True Gyro Heading", getGyroAngle());
 		// System.out.println("L: " + leftMaster.getSelectedSensorVelocity() + ", R: " + rightMaster.getSelectedSensorVelocity() + ", N: " + normalMaster.getSelectedSensorVelocity());
 	}
 

@@ -43,10 +43,12 @@ public class Trajectories {
         new Waypoint(3.138, -3.454, Pathfinder.d2r(-18.5))
     });*/
 
-    public static final Trajectory[] CurveRight1M = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
-        new Waypoint(0, 0, 0),
-        new Waypoint(1, -1, Units.degreesToRadians(-90))
-    });
+    // public static final Trajectory[] CurveRight1M = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
+    //     new Waypoint(0, 0, 0),
+    //     new Waypoint(1, -1, Units.degreesToRadians(-90))
+    // });
+
+    public static final Trajectory[] SnakeCurve = TrajectoryGenerator.readTrajectoriesNew("test");
     
     public static final Trajectory[] MoveOneMeter = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
         new Waypoint(0, 0, 0),
