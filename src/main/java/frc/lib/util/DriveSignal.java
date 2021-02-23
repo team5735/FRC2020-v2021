@@ -25,6 +25,7 @@ public class DriveSignal {
     }
 
     public static DriveSignal NEUTRAL = new DriveSignal(ControlMode.PercentOutput, 0, 0, 0);
+    public static DriveSignal STOP = new DriveSignal(ControlMode.Current, 0, 0);
 
     public ControlMode getControlMode() {
         return controlMode;

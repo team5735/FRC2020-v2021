@@ -64,8 +64,6 @@ public class TurnToAngleCommand extends CommandBase {
 		} else {
 			inDeadbandTime = -1;
 		}
-
-		SmartDashboard.putNumber("Gyro Angle", drivetrain.getGyroAngle());
 	}
 	
 	// Called once the command ends or is interrupted.
@@ -73,8 +71,6 @@ public class TurnToAngleCommand extends CommandBase {
 	public void end(boolean interrupted) {
 		System.out.println("TURN TARGET COMMAND | END");
 		drivetrain.drive(DriveSignal.NEUTRAL);
-
-		// SmartDashboard.putNumber("DISTANCE", vision.getDistanceToTarget());
 	}
 	
 	// Returns true when the command should end.
