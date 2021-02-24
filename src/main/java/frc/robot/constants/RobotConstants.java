@@ -9,6 +9,7 @@ package frc.robot.constants;
 
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import frc.lib.util.Units;
 
 /**
@@ -91,6 +92,23 @@ public class RobotConstants {
     public static final double FLYWHEEL_kI = 0.0;
     public static final double FLYWHEEL_kD = 0;//0.2;//0.15;//0.004;
     public static final double FLYWHEEL_kF = 0.7 / 4900.0 * 0.79;//0.78;
+
+    public static final double ksVolts = 0.736;
+    public static final double kvVoltSecondsPerMeter = 0.229;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.0266;
+
+    // P controller to correct drivetrain velocity
+    public static final double kPDriveVel = 1.98;
+
+    public static final DifferentialDriveKinematics kDriveKinematics =
+        new DifferentialDriveKinematics(DRIVETRAIN_TRACK_WIDTH);
+
+    public static final double kMaxSpeedMetersPerSecond = 0.8;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0.8;
+
+    // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZeta = 0.7;
 
     // Drivetrain
     public static final double kTURN_CORRECTION = -0.01; // Turn is in m/s
