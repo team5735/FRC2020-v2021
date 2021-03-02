@@ -35,7 +35,7 @@ public class RobotConstants {
     public static final double ENCODER_TICKS_PER_FALCON_REV = 2048.0;
     public static final double ENCODER_TICKS_PER_DT_WHEEL_REV = ENCODER_TICKS_PER_FALCON_REV * DRIVETRAIN_GEAR_RATIO;
     public static final double ENCODER_TICKS_PER_NORMAL_WHEEL_REV = ENCODER_TICKS_PER_FALCON_REV * NORMAL_GEAR_RATIO;
-    public static final double DRIVETRAIN_TRACK_WIDTH = Units.inchesToMeters(23.5); // 0.5969 m
+    public static final double DRIVETRAIN_TRACK_WIDTH = Units.inchesToMeters(23.5); // 0.5969 m // TODO: maybe replace with 2.0292 ft??
     public static final double DT_WHEEL_DIAMETER = Units.inchesToMeters(6.0); // m
     public static final double NORMAL_WHEEL_DIAMETER = Units.inchesToMeters(3.25); // m
     
@@ -93,12 +93,12 @@ public class RobotConstants {
     public static final double FLYWHEEL_kD = 0;//0.2;//0.15;//0.004;
     public static final double FLYWHEEL_kF = 0.7 / 4900.0 * 0.79;//0.78;
 
-    public static final double ksVolts = 0.736;
-    public static final double kvVoltSecondsPerMeter = 0.229;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.0266;
+    public static final double ksVolts = 0.789;
+    public static final double kvVoltSecondsPerMeter = 0.439;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.0705;
 
     // P controller to correct drivetrain velocity
-    public static final double kPDriveVel = 1.98;
+    public static final double kPDriveVel = 0.439;
 
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(DRIVETRAIN_TRACK_WIDTH);

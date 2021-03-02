@@ -9,6 +9,7 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -18,9 +19,13 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,7 +41,6 @@ import frc.robot.commands.climber.ElevatorMoveCommand;
 import frc.robot.commands.climber.WinchMoveCommand;
 import frc.robot.commands.drivetrain.ChangeDriveMode;
 import frc.robot.commands.drivetrain.DriveFollowTrajectory;
-import frc.robot.commands.drivetrain.ResetGyroAngle;
 import frc.robot.commands.intake.AngleIntakeCommand;
 import frc.robot.commands.intake.FeedShooterCommand;
 import frc.robot.commands.intake.IntakeBallCommand;
@@ -52,7 +56,6 @@ import frc.robot.subsystems.Telescope;
 import frc.robot.subsystems.ColorMatcher;
 import frc.robot.subsystems.ColorSpinner;
 import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.IntakeArm;
@@ -60,7 +63,6 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.TrajectoryGenerator;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Winch;
-import frc.robot.subsystems.Drivetrain.DriveMode;
 
 /**
 * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -73,7 +75,6 @@ public class RobotContainer {
 	public final ColorMatcher colorMatcher = new ColorMatcher();
 	public final ColorSpinner colorSpinner = new ColorSpinner();
 	public final Drivetrain drivetrain = new Drivetrain();
-	public final DriveSubsystem new_dt = new DriveSubsystem();
 	public final Shooter shooter = new Shooter();
 	public final Banana banana = new Banana();
 	public final Feeder feeder = new Feeder();
@@ -95,6 +96,8 @@ public class RobotContainer {
 		configureDriverBindings();
 		configureSubsystemBindings();
 		SmartDashboard.putNumber("RPM", RobotConstants.FLYWHEEL_PRESET_LINE);
+
+		getRamseteCommand();
 		
 		// TrajectoryGenerator.exportTrajectories(sixBall, "MiddleToTrench");
 	}
@@ -105,7 +108,6 @@ public class RobotContainer {
 		intakeArm.intakeBall(0, false);
 		vision.disableTracking();
 		drivetrain.drive(DriveSignal.NEUTRAL);
-		drivetrain.setDriveMode(DriveMode.STATIC_DRIVE);
 	}
 	
 	private void configureDriverBindings() {
@@ -113,8 +115,8 @@ public class RobotContainer {
 		// subsystemController.bButton.whenPressed(new ColorMatchCommand(colorSpinner, colorMatcher));
 		// driverController.aButton.whenPressed(new AngleIntakeCommand(intake, RobotConstants.INTAKE_POSITION_DEPLOYED));
 		// driverController.bButton.whenPressed(new AngleIntakeCommand(intake, RobotConstants.INTAKE_POSITION_RETRACTED));
-		driverController.yButton.whenPressed(new ResetGyroAngle(drivetrain));
-		driverController.xButton.whenPressed(new ChangeDriveMode(drivetrain));
+		// driverController.yButton.whenPressed(new ResetGyroAngle(drivetrain));
+		// driverController.xButton.whenPressed(new ChangeDriveMode(drivetrain));
 		
 		driverController.rightBumper.whileActiveContinuous(new AngleIntakeCommand(intakeArm, false));
 		driverController.leftBumper.whileActiveContinuous(new AngleIntakeCommand(intakeArm, true));
@@ -172,51 +174,68 @@ public class RobotContainer {
 	* @return the command to run in autonomous
 	*/
 	public Command getAutonomousCommand() {
-		return new DriveFollowTrajectory(drivetrain, Trajectories.SnakeCurve[0], Trajectories.SnakeCurve[1], false);
+		return getRamseteCommand();
+		// return new DriveFollowTrajectory(drivetrain, Trajectories.SnakeCurve[0], Trajectories.SnakeCurve[1], false);
 		// return new DriveFollowTrajectory(drivetrain, Trajectories.MoveOneMeter[0], Trajectories.MoveOneMeter[1], false);
 		// return new SixBallAutoCommand(vision, drivetrain, feeder, conveyor, intakeArm, shooter, banana);
 	}
 	
 	public Command getRamseteCommand() {
-		// Create a voltage constraint to ensure we don't accelerate too fast
+
 		var autoVoltageConstraint =
-		new DifferentialDriveVoltageConstraint(
-		new SimpleMotorFeedforward(RobotConstants.ksVolts,
-		RobotConstants.kvVoltSecondsPerMeter,
-		RobotConstants.kaVoltSecondsSquaredPerMeter),
-		RobotConstants.kDriveKinematics,
-		10);
-		
-		String trajectoryJSON = "paths/YourPath.wpilib.json";
-		Trajectory trajectory = new Trajectory();
-		try {
-			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-		} catch (IOException ex) {
-			DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-		}
+        new DifferentialDriveVoltageConstraint(
+            new SimpleMotorFeedforward(RobotConstants.ksVolts,
+			RobotConstants.kvVoltSecondsPerMeter,
+			RobotConstants.kaVoltSecondsSquaredPerMeter),
+            RobotConstants.kDriveKinematics,
+            10);
+
+		// Create config for trajectory
+		TrajectoryConfig config =
+			new TrajectoryConfig(RobotConstants.kMaxSpeedMetersPerSecond,
+			RobotConstants.kMaxAccelerationMetersPerSecondSquared)
+				// Add kinematics to ensure max speed is actually obeyed
+				.setKinematics(RobotConstants.kDriveKinematics)
+				// Apply the voltage constraint
+				.addConstraint(autoVoltageConstraint);
+
+		// An example trajectory to follow.  All units in meters.
+		Trajectory trajectory = edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator.generateTrajectory(
+			// Start at the origin facing the +X direction
+			new Pose2d(0, 0, new Rotation2d(0)),
+			// Pass through these two interior waypoints, making an 's' curve path
+			List.of(
+				new Translation2d(1, 0)
+				// new Translation2d(2, -1)
+			),
+			// End 3 meters straight ahead of where we started, facing forward
+			new Pose2d(1.524, 0, new Rotation2d(0)),
+			// Pass config
+			config
+		);
+		// Trajectory trajectory = Trajectories.FiveFeet;
 		
 		RamseteCommand ramseteCommand = new RamseteCommand(
 		trajectory,
-		new_dt::getPose,
+		drivetrain::getPose,
 		new RamseteController(RobotConstants.kRamseteB, RobotConstants.kRamseteZeta),
 		new SimpleMotorFeedforward(RobotConstants.ksVolts,
 		RobotConstants.kvVoltSecondsPerMeter,
 		RobotConstants.kaVoltSecondsSquaredPerMeter),
 		RobotConstants.kDriveKinematics,
-		new_dt::getWheelSpeeds,
+		drivetrain::getWheelSpeeds,
 		new PIDController(RobotConstants.kPDriveVel, 0, 0),
 		new PIDController(RobotConstants.kPDriveVel, 0, 0),
 		// RamseteCommand passes volts to the callback
-		new_dt::tankDriveVolts,
-		new_dt
+		drivetrain::tankDriveVolts,
+		drivetrain
 		);
 		
 		// Reset odometry to the starting pose of the trajectory.
-		new_dt.resetOdometry(trajectory.getInitialPose());
+		drivetrain.resetOdometry(trajectory.getInitialPose());
 		
 		// Run path following command, then stop at the end.
-		return ramseteCommand.andThen(() -> new_dt.tankDriveVolts(0, 0));
+		return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
 	}
 	
 }

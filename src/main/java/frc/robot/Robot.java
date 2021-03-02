@@ -11,11 +11,11 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.Trajectories;
 import frc.robot.subsystems.Feeder;
-import jaci.pathfinder.Trajectory;
 
 /**
 * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
 		// UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
 		// camera.setFPS(15);
 		// camera.setBrightness(69);
-		Trajectory[] trajectories = Trajectories.MoveOneMeter; // get it to generate trajectories on robot start
+		Trajectory trajectory = Trajectories.FiveFeet; // get it to generate trajectories on robot start
 	}
 	
 	/**
@@ -75,8 +75,6 @@ public class Robot extends TimedRobot {
 	*/
 	@Override
 	public void autonomousInit() {
-		m_robotContainer.drivetrain.reset();
-
 		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 		
 		// schedule the autonomous command (example)

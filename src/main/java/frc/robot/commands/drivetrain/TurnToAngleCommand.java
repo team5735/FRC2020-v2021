@@ -53,7 +53,7 @@ public class TurnToAngleCommand extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		degreeError = gyroSetpoint - drivetrain.getGyroAngle();
+		degreeError = gyroSetpoint - drivetrain.getHeading();
 		double steer_cmd = Util.limit(turnPID.calculate(degreeError, 0), -1, 1); 
 		
 		drivetrain.drive(new DriveSignal(ControlMode.PercentOutput, -steer_cmd, steer_cmd, 0));

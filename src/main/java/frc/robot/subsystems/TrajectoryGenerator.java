@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.constants.RobotConstants;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -71,6 +72,16 @@ public class TrajectoryGenerator {
             DriverStation.reportError("Unable to open trajectory: " + fileName, ex.getStackTrace());
         }
         return null;
+    }
+
+    public static edu.wpi.first.wpilibj.trajectory.Trajectory readPathweaverJSON(String filename) {
+		edu.wpi.first.wpilibj.trajectory.Trajectory trajectory = new edu.wpi.first.wpilibj.trajectory.Trajectory();
+		try {
+			Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(filename);
+			trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+		} catch (IOException ex) {
+        } 
+        return trajectory;
     }
     
     public static void exportTrajectories(Trajectory[] trajectories, String fileName) {

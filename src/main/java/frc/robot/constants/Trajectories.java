@@ -1,10 +1,8 @@
 package frc.robot.constants;
 
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.subsystems.TrajectoryGenerator;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
 
 public class Trajectories {
     
@@ -48,10 +46,12 @@ public class Trajectories {
     //     new Waypoint(1, -1, Units.degreesToRadians(-90))
     // });
 
-    public static final Trajectory[] SnakeCurve = TrajectoryGenerator.readTrajectoriesNew("test");
+    // public static final Trajectory[] SnakeCurve = TrajectoryGenerator.readTrajectoriesNew("test");
     
-    public static final Trajectory[] MoveOneMeter = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
-        new Waypoint(0, 0, 0),
-        new Waypoint(1, 0, 0)
-    });
+    // public static final Trajectory[] MoveOneMeter = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
+    //     new Waypoint(0, 0, 0),
+    //     new Waypoint(1, 0, 0)
+    // });
+
+    public static final Trajectory FiveFeet = TrajectoryGenerator.readPathweaverJSON("Test.wpilib.json");
 }

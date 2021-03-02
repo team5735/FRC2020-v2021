@@ -1,3 +1,4 @@
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -22,10 +23,8 @@ import frc.robot.subsystems.Drivetrain;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 
-/**
-* An example command that uses an example subsystem.
-*/
 public class DriveFollowTrajectory extends CommandBase {
+	/*
 	@SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 	private final Drivetrain s_drivetrain;
 	private Trajectory leftTraj, rightTraj;
@@ -119,4 +118,5 @@ public class DriveFollowTrajectory extends CommandBase {
 		}
 		return false;
 	}
+	*/
 }

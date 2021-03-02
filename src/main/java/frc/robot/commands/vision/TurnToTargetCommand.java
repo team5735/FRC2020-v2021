@@ -48,7 +48,7 @@ public class TurnToTargetCommand extends CommandBase implements BooleanSupplier 
 	public void initialize() {
 		System.out.println("TURN TO TARGET");
 		vision.enableTracking();
-		drivetrain.setPreviousGyroAngle();
+		// drivetrain.setPreviousGyroAngle(); TODO
 		inDeadbandTime = -1;
 	}
 	
@@ -71,7 +71,7 @@ public class TurnToTargetCommand extends CommandBase implements BooleanSupplier 
 			}
 		}
 		
-		SmartDashboard.putNumber("Gyro Angle", drivetrain.getGyroAngle());
+		SmartDashboard.putNumber("Gyro Angle", drivetrain.getHeading());
 	}
 	
 	// Called once the command ends or is interrupted.

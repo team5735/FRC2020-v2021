@@ -19,7 +19,7 @@ import frc.robot.subsystems.Banana;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.Drivetrain.DriveMode;
+// import frc.robot.subsystems.Drivetrain.DriveMode;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
@@ -73,13 +73,13 @@ public class TurnAndShootFullAutoCommand extends SequentialCommandGroup {
     @Override
     public void initialize() {
         super.initialize();
-        drivetrain.setDriveMode(DriveMode.DISABLED);
+        // drivetrain.setDriveMode(DriveMode.DISABLED);
     }
 
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        drivetrain.setDriveMode(DriveMode.STATIC_DRIVE);
+        // drivetrain.setDriveMode(DriveMode.STATIC_DRIVE);
     }
     
 }

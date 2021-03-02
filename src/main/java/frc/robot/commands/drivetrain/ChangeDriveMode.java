@@ -5,16 +5,16 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Drivetrain.DriveMode;
 
 public class ChangeDriveMode extends CommandBase {
-
+/*
   private Drivetrain drivetrain;
 
   public ChangeDriveMode(Drivetrain drivetrain) {
@@ -47,4 +47,5 @@ public class ChangeDriveMode extends CommandBase {
   public boolean isFinished() {
     return true;
   }
+  */
 }

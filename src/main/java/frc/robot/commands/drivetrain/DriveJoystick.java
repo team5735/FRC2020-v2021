@@ -18,7 +18,6 @@ import frc.robot.RobotContainer;
 import frc.robot.constants.RobotConstants;
 import frc.robot.helper.HDriveHelper;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Drivetrain.DriveMode;
 
 public class DriveJoystick extends CommandBase {
 	
@@ -44,16 +43,9 @@ public class DriveJoystick extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-
-		if(drivetrain.getDriveMode() == DriveMode.DISABLED) return;
-
 		double forward = Util.deadband(RobotContainer.driverController.rightStick.getY(), 0.16);
 		double normal = Util.deadband(RobotContainer.driverController.rightStick.getX(), 0.2);
 		double turn = Util.deadband(RobotContainer.driverController.leftStick.getX(), 0.16);
-
-		SmartDashboard.putNumber("Gyro Angle", drivetrain.getGyroAngle());
-		SmartDashboard.putNumber("Left Velocity", drivetrain.getLeftVelocity());
-		SmartDashboard.putNumber("Right Velocity", drivetrain.getRightVelocity());
 
 		/* 0.5x + 0.5x^3
 		forward = (0.5 * forward) + (0.5 * Math.pow(forward, 3));
@@ -75,12 +67,12 @@ public class DriveJoystick extends CommandBase {
 		normal = Math.copySign(Math.pow(normal, 3), normal);
 		turn = Math.copySign(Math.pow(turn, 3), turn); */
 		
-		if(drivetrain.getDriveMode() == DriveMode.FIELD_CENTRIC) {
-			drivetrain.drive(HDriveHelper.HdriveFieldCentric(forward, normal, turn, drivetrain.getGyroAngle()));
-		} else {
+		// if(drivetrain.getDriveMode() == DriveMode.FIELD_CENTRIC) {
+		// 	drivetrain.drive(HDriveHelper.HdriveFieldCentric(forward, normal, turn, drivetrain.getGyroAngle()));
+		// } else {
 			drivetrain.drive(HDriveHelper.HDrive(forward, normal, turn, false));
 			// drivetrain.drive(new DriveSignal(ControlMode.Velocity, 0, 0, normal * RobotConstants.MAX_VELOCITY_NORMAL_TICKS));
-		}
+		// }
 		
 		// System.out.println("Gyro Angle: " + drivetrain.getGyroAngle());
 	}
