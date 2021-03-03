@@ -214,6 +214,8 @@ public class RobotContainer {
 			config
 		);
 		// Trajectory trajectory = Trajectories.FiveFeet;
+
+		System.out.println("##### TRajectory time: " + trajectory.getTotalTimeSeconds());
 		
 		RamseteCommand ramseteCommand = new RamseteCommand(
 		trajectory,
