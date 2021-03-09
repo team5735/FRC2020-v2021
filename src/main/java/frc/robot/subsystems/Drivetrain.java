@@ -108,6 +108,9 @@ public class Drivetrain extends SubsystemBase {
 	* @return The pose.
 	*/
 	public Pose2d getPose() {
+		Pose2d currentPose = m_odometry.getPoseMeters();
+		SmartDashboard.putNumber("current pos x", currentPose.getX());
+		SmartDashboard.putNumber("pos x setpoint", 1.524);
 		return m_odometry.getPoseMeters();
 	}
 	
@@ -161,6 +164,9 @@ public class Drivetrain extends SubsystemBase {
 	* @param rightVolts the commanded right output
 	*/
 	public void tankDriveVolts(double leftVolts, double rightVolts) {
+		SmartDashboard.putNumber("left volts", leftVolts);
+		SmartDashboard.putNumber("right volts", rightVolts);
+
 		double batteryVolt = RobotController.getBatteryVoltage();
 		drive(ControlMode.PercentOutput, leftVolts / batteryVolt, rightVolts / batteryVolt, 0);
 	}

@@ -54,4 +54,6 @@ public class Trajectories {
     // });
 
     public static final Trajectory FiveFeet = TrajectoryGenerator.readPathweaverJSON("Test.wpilib.json");
+    public static final Trajectory UPath = TrajectoryGenerator.readPathweaverJSON("U.wpilib.json");
+    public static final Trajectory SPath = TrajectoryGenerator.readPathweaverJSON("S.wpilib.json");
 }

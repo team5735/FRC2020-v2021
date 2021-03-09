@@ -88,7 +88,8 @@ public class Robot extends TimedRobot {
 	*/
 	@Override
 	public void autonomousPeriodic() {
-		m_autonomousCommand.schedule();
+		// 3/8/2021 - you caused us so much pain and suffering. https://www.chiefdelphi.com/t/frc-characterization-ramsetecommand-causing-oscillation-around-setpoint/391951/19
+		// m_autonomousCommand.schedule();
 	}
 	
 	@Override

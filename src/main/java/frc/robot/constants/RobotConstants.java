@@ -93,12 +93,12 @@ public class RobotConstants {
     public static final double FLYWHEEL_kD = 0;//0.2;//0.15;//0.004;
     public static final double FLYWHEEL_kF = 0.7 / 4900.0 * 0.79;//0.78;
 
-    public static final double ksVolts = 0.789;
-    public static final double kvVoltSecondsPerMeter = 0.439;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.0705;
+    public static final double ksVolts = 0.773;
+    public static final double kvVoltSecondsPerMeter = 0.438;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.0943;
 
     // P controller to correct drivetrain velocity
-    public static final double kPDriveVel = 0.439;
+    public static final double kPDriveVel = 2.6;
 
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(DRIVETRAIN_TRACK_WIDTH);

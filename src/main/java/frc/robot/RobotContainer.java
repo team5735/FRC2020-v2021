@@ -138,7 +138,7 @@ public class RobotContainer {
 		// subsystemController.aButton.whenPressed(new RampShooterCommand(shooter, 3750));
 		// subsystemController.aButton.whenReleased(new RampShooterCommand(shooter, 0));
 		
-		subsystemController.Dpad.Up.whenPressed(new RampShooterCommand(shooter, vision, banana, feeder, 3000.00));
+		subsystemController.Dpad.Up.whenPressed(new RampShooterCommand(shooter, vision, banana, feeder, 3600.00));
 		subsystemController.Dpad.Down.whenPressed(new RampShooterCommand(shooter, vision, banana, feeder, 0.0));
 		
 		subsystemController.aButton.whenPressed(new InstantCommand(vision::getDistanceToTarget, vision));
@@ -181,7 +181,7 @@ public class RobotContainer {
 	}
 	
 	public Command getRamseteCommand() {
-
+		/*
 		var autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(
             new SimpleMotorFeedforward(RobotConstants.ksVolts,
@@ -213,8 +213,9 @@ public class RobotContainer {
 			// Pass config
 			config
 		);
-		// Trajectory trajectory = Trajectories.FiveFeet;
-		
+		*/
+		Trajectory trajectory = Trajectories.SPath;
+
 		RamseteCommand ramseteCommand = new RamseteCommand(
 		trajectory,
 		drivetrain::getPose,
