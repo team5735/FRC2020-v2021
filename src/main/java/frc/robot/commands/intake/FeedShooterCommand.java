@@ -24,7 +24,7 @@ public class FeedShooterCommand extends CommandBase {
 	public FeedShooterCommand(Feeder feeder, Shooter shooter, boolean inverted) {
 		this.feeder = feeder;
 		this.shooter = shooter;
-		this.speed = 1.0;
+		this.speed = 0.5;
 		this.inverted = inverted;
 		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(feeder);

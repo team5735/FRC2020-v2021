@@ -16,13 +16,13 @@ public class Trajectories {
         new Waypoint(3.138, -0.718, 0),
         new Waypoint(8.04, -0.718, 0)
     });
-
+*/
     public static final Trajectory[] MiddleToTrench = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
         new Waypoint(3.138, -2.45, 0),
         new Waypoint(5.45, -0.718, 0),
-        new Waypoint(8.04, -0.718, 0)
+        // new Waypoint(8.04, -0.718, 0)
     });
-
+/*
     public static final Trajectory[] TrenchToColorWheel = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
         new Waypoint(8.04, -0.718, 0),
         new Waypoint(9.74, -0.718, 0)
@@ -48,7 +48,7 @@ public class Trajectories {
     //     new Waypoint(1, -1, Units.degreesToRadians(-90))
     // });
 
-    public static final Trajectory[] SnakeCurve = TrajectoryGenerator.readTrajectoriesNew("test");
+    // public static final Trajectory[] SnakeCurve = TrajectoryGenerator.readTrajectoriesNew("test");
     
     public static final Trajectory[] MoveOneMeter = TrajectoryGenerator.generateTrajectoryWithWaypoints(new Waypoint[] {
         new Waypoint(0, 0, 0),

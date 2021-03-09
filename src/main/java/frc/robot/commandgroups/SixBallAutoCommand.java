@@ -37,7 +37,7 @@ public class SixBallAutoCommand extends SequentialCommandGroup {
         addCommands(
             new TurnAndShootFullAutoCommand(vision, drivetrain, feeder, conveyor, intakeArm, shooter, banana),
             new ParallelDeadlineGroup(
-                // new DriveFollowTrajectory(drivetrain, Trajectories.MiddleToTrench[0], Trajectories.MiddleToTrench[1], false),
+                new DriveFollowTrajectory(drivetrain, Trajectories.MiddleToTrench[0], Trajectories.MiddleToTrench[1], false),
                 new TurnOffLimelightCommand(vision),
                 new AngleIntakeCommand(intakeArm, false).withTimeout(0.69),
                 new IntakeBallCommand(intakeArm, 0.69, false), // never ends

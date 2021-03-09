@@ -36,16 +36,17 @@ public class ShootBallCommand extends SequentialCommandGroup {
 			new PrintCommand("Shoot Ball"),
 			new ParallelDeadlineGroup(
 				new ParallelCommandGroup(
-					new WaitUntilCommand(() -> shooter.atSpeed(RobotConstants.FLYWHEEL_RPM_DEADBAND)),
-					new WaitUntilCommand(() -> feeder.hasBall())
+					new WaitUntilCommand(() -> shooter.atSpeed(RobotConstants.FLYWHEEL_RPM_DEADBAND))
+					// new WaitUntilCommand(() -> feeder.hasBall())
 				),
-				new MoveConveyorCommand(conveyor, feeder, shooter, 0.6, inverted),
+				new MoveConveyorCommand(conveyor, feeder, shooter, 0.8, inverted),
 				new IntakeBallCommand(intakeArm, 0.5, inverted)
-			),
+			)
+			,
 			new ParallelDeadlineGroup(
-				// new FeedShooterCommand(feeder, shooter, inverted).withTimeout(0.08),
-				new FeedShooterIfHasBallCommand(feeder, shooter, inverted, true),
-				// new MoveConveyorCommand(conveyor, feeder, shooter, 0.2, inverted),
+				new FeedShooterCommand(feeder, shooter, inverted).withTimeout(2.5),
+				// new FeedShooterIfHasBallCommand(feeder, shooter, inverted, true),
+				new MoveConveyorCommand(conveyor, feeder, shooter, 0.8, inverted),
 				new IntakeBallCommand(intakeArm, 0.5, inverted)
 			)
 		);

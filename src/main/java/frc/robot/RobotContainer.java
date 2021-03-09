@@ -162,9 +162,9 @@ public class RobotContainer {
 	* @return the command to run in autonomous
 	*/
 	public Command getAutonomousCommand() {
-		return new DriveFollowTrajectory(drivetrain, Trajectories.SnakeCurve[0], Trajectories.SnakeCurve[1], false);
+		// return new DriveFollowTrajectory(drivetrain, Trajectories.SnakeCurve[0], Trajectories.SnakeCurve[1], false);
 		// return new DriveFollowTrajectory(drivetrain, Trajectories.MoveOneMeter[0], Trajectories.MoveOneMeter[1], false);
-		// return new SixBallAutoCommand(vision, drivetrain, feeder, conveyor, intakeArm, shooter, banana);
+		return new SixBallAutoCommand(vision, drivetrain, feeder, conveyor, intakeArm, shooter, banana);
 	}
 	
 }

@@ -44,6 +44,7 @@ public class TurnAndShootFullAutoCommand extends SequentialCommandGroup {
     public TurnAndShootFullAutoCommand(Vision vision, Drivetrain drivetrain, Feeder feeder, Conveyor conveyor, IntakeArm intakeArm, Shooter shooter, Banana banana) {
         this.vision = vision;
         this.drivetrain = drivetrain;
+        this.feeder = feeder;
         this.conveyor = conveyor;
         this.intakeArm = intakeArm;
         this.shooter = shooter;
@@ -55,17 +56,17 @@ public class TurnAndShootFullAutoCommand extends SequentialCommandGroup {
             // https://docs.wpilib.org/en/latest/docs/software/commandbased/command-groups.html
             new ParallelDeadlineGroup(
                 new SequentialCommandGroup(
-                    new RampShooterCommand(shooter, vision, banana, feeder, 3600),
+                    new RampShooterCommand(shooter, vision, banana, feeder, 4000),
                     // new WaitUntilCommand(turnToTargetCommand),
                     // new RampShooterCommand(shooter, vision, banana, feeder, true),
                     new ShootBallCommand(feeder, conveyor, intakeArm, shooter, false),
-                    new PrintCommand("Ball 1"),
-                    new ShootBallCommand(feeder, conveyor, intakeArm, shooter, false),
-                    new PrintCommand("Ball 2"),
-                    new ShootBallCommand(feeder, conveyor, intakeArm, shooter, false),
-                    new PrintCommand("Ball 3")
-                )
-                // turnToTargetCommand
+                    new PrintCommand("Ball 1")
+                    // new ShootBallCommand(feeder, conveyor, intakeArm, shooter, false),
+                    // new PrintCommand("Ball 2")
+                    // new ShootBallCommand(feeder, conveyor, intakeArm, shooter, false),
+                    // new PrintCommand("Ball 3")
+                ),
+                turnToTargetCommand
             )
         );
     } 
@@ -80,6 +81,10 @@ public class TurnAndShootFullAutoCommand extends SequentialCommandGroup {
     public void end(boolean interrupted) {
         super.end(interrupted);
         drivetrain.setDriveMode(DriveMode.STATIC_DRIVE);
+        shooter.setSpeed(0);
+        conveyor.rollConveyor(0, false);
+        feeder.feedShooter(0, false);
+        vision.disableTracking();
     }
     
 }
