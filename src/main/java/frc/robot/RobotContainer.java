@@ -7,52 +7,35 @@
 
 package frc.robot;
 
-import java.io.IOException;
-import java.nio.file.Path;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.controllers.BobXboxController;
 import frc.lib.util.DriveSignal;
 import frc.robot.commandgroups.SixBallAutoCommand;
-import frc.robot.commandgroups.TurnAndShootCommand;
-import frc.robot.commandgroups.TurnAndShootCommandSemiAuto;
-import frc.robot.commands.climber.ElevatorMoveCommand;
-import frc.robot.commands.climber.WinchMoveCommand;
-import frc.robot.commands.drivetrain.ChangeDriveMode;
-import frc.robot.commands.drivetrain.DriveFollowTrajectory;
 import frc.robot.commands.intake.AngleIntakeCommand;
 import frc.robot.commands.intake.FeedShooterCommand;
 import frc.robot.commands.intake.IntakeBallCommand;
 import frc.robot.commands.intake.MoveConveyorCommand;
-import frc.robot.commands.intake.ZeroIntakeCommand;
-import frc.robot.commands.shooter.MoveBananaCommand;
 import frc.robot.commands.shooter.RampShooterCommand;
 import frc.robot.commands.shooter.ReverseShooterCommand;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.Trajectories;
 import frc.robot.subsystems.Banana;
-import frc.robot.subsystems.Telescope;
 import frc.robot.subsystems.ColorMatcher;
 import frc.robot.subsystems.ColorSpinner;
 import frc.robot.subsystems.Conveyor;
@@ -60,6 +43,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.IntakeArm;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Telescope;
 import frc.robot.subsystems.TrajectoryGenerator;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Winch;
@@ -88,6 +72,9 @@ public class RobotContainer {
 	public static final BobXboxController driverController = new BobXboxController(0);
 	public static final BobXboxController subsystemController = new BobXboxController(1);
 	
+	public static SendableChooser<String> autoPathChooser = new SendableChooser<>();
+	
+	
 	/**
 	* The container for the robot.  Contains subsystems, OI devices, and commands.
 	*/
@@ -95,19 +82,8 @@ public class RobotContainer {
 		// Configure the button bindings
 		configureDriverBindings();
 		configureSubsystemBindings();
-		SmartDashboard.putNumber("RPM", RobotConstants.FLYWHEEL_PRESET_LINE);
-
-		getRamseteCommand();
 		
-		// TrajectoryGenerator.exportTrajectories(sixBall, "MiddleToTrench");
-	}
-	
-	public void stopAll() {
-		CommandScheduler.getInstance().cancelAll();
-		shooter.slowDown();
-		intakeArm.intakeBall(0, false);
-		vision.disableTracking();
-		drivetrain.drive(DriveSignal.NEUTRAL);
+		setupPathChooser();
 	}
 	
 	private void configureDriverBindings() {
@@ -165,7 +141,15 @@ public class RobotContainer {
 		subsystemController.leftTriggerButton.whileActiveContinuous(new FeedShooterCommand(feeder, shooter, true));
 		
 		subsystemController.startButton.whileActiveContinuous(new ReverseShooterCommand(shooter));
-		
+	}
+	
+	public void setupPathChooser() {
+		// Reads ONLY directory names inside deploy directory
+		for(String pathName : Filesystem.getDeployDirectory().list()) {
+			autoPathChooser.addOption(pathName, pathName);
+		  }
+	  
+		  SmartDashboard.putData("Auto Path", autoPathChooser);
 	}
 	
 	/**
@@ -174,48 +158,26 @@ public class RobotContainer {
 	* @return the command to run in autonomous
 	*/
 	public Command getAutonomousCommand() {
-		return getRamseteCommand();
-		// return new DriveFollowTrajectory(drivetrain, Trajectories.SnakeCurve[0], Trajectories.SnakeCurve[1], false);
-		// return new DriveFollowTrajectory(drivetrain, Trajectories.MoveOneMeter[0], Trajectories.MoveOneMeter[1], false);
 		// return new SixBallAutoCommand(vision, drivetrain, feeder, conveyor, intakeArm, shooter, banana);
+		// return getRamseteCommand(TrajectoryGenerator.readPathweaverJSON("bounce/Bounce2.wpilib.json"));
+
+		String autoPath = autoPathChooser.getSelected();
+	
+		// list json files inside
+		String[] chosenAutoFiles = Filesystem.getDeployDirectory().toPath().resolve(autoPath).toFile().list();
+		Arrays.sort(chosenAutoFiles); // sort alphabetically
+
+		List<Command> commandList = new ArrayList<>();
+		for(String fileName : chosenAutoFiles) {
+			Trajectory traj = TrajectoryGenerator.readPathweaverJSON(autoPath + "/" + fileName); // e.g. straight/Straight.wpilib.json
+			commandList.add(getRamseteCommand(traj));
+		}
+
+		return new SequentialCommandGroup((Command[]) commandList.toArray());
 	}
 	
-	public Command getRamseteCommand() {
-		/*
-		var autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(RobotConstants.ksVolts,
-			RobotConstants.kvVoltSecondsPerMeter,
-			RobotConstants.kaVoltSecondsSquaredPerMeter),
-            RobotConstants.kDriveKinematics,
-            10);
-
-		// Create config for trajectory
-		TrajectoryConfig config =
-			new TrajectoryConfig(RobotConstants.kMaxSpeedMetersPerSecond,
-			RobotConstants.kMaxAccelerationMetersPerSecondSquared)
-				// Add kinematics to ensure max speed is actually obeyed
-				.setKinematics(RobotConstants.kDriveKinematics)
-				// Apply the voltage constraint
-				.addConstraint(autoVoltageConstraint);
-
-		// An example trajectory to follow.  All units in meters.
-		Trajectory trajectory = edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator.generateTrajectory(
-			// Start at the origin facing the +X direction
-			new Pose2d(0, 0, new Rotation2d(0)),
-			// Pass through these two interior waypoints, making an 's' curve path
-			List.of(
-				new Translation2d(1, 0)
-				// new Translation2d(2, -1)
-			),
-			// End 3 meters straight ahead of where we started, facing forward
-			new Pose2d(1.524, 0, new Rotation2d(0)),
-			// Pass config
-			config
-		);
-		*/
-		Trajectory trajectory = Trajectories.SPath;
-
+	public Command getRamseteCommand(Trajectory trajectory) {
+		
 		RamseteCommand ramseteCommand = new RamseteCommand(
 		trajectory,
 		drivetrain::getPose,
@@ -237,6 +199,14 @@ public class RobotContainer {
 		
 		// Run path following command, then stop at the end.
 		return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
+	}
+	
+	public void stopAll() {
+		CommandScheduler.getInstance().cancelAll();
+		shooter.slowDown();
+		intakeArm.intakeBall(0, false);
+		vision.disableTracking();
+		drivetrain.drive(DriveSignal.NEUTRAL);
 	}
 	
 }
