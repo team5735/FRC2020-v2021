@@ -40,7 +40,6 @@ public class Robot extends TimedRobot {
 		// UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
 		// camera.setFPS(15);
 		// camera.setBrightness(69);
-		Trajectory trajectory = Trajectories.FiveFeet; // get it to generate trajectories on robot start
 	}
 	
 	/**

@@ -52,8 +52,4 @@ public class Trajectories {
     //     new Waypoint(0, 0, 0),
     //     new Waypoint(1, 0, 0)
     // });
-
-    public static final Trajectory FiveFeet = TrajectoryGenerator.readPathweaverJSON("Test.wpilib.json");
-    public static final Trajectory UPath = TrajectoryGenerator.readPathweaverJSON("U.wpilib.json");
-    public static final Trajectory SPath = TrajectoryGenerator.readPathweaverJSON("S.wpilib.json");
 }

@@ -142,13 +142,7 @@ public class RobotConstants {
 
     // Current Limiting
     public static StatorCurrentLimitConfiguration TALON_CURRENT_LIMIT = new StatorCurrentLimitConfiguration(true, 38.5, 38.5, 0.25);
-    
-    // Tuned dynamics
-    public static final double ROBOT_LINEAR_INERTIA = 60.0; // kg TODO tune
-    public static final double ROBOT_ANGULAR_INERTIA = 10.0; // kg m^2 TODO tune
-    public static final double ROBOT_ANGULAR_DRAG = 12.0; // N*m / (rad/sec) TODO tune
-    public static final double DRIVE_VINTERCEPT = 1.055; // V
-    
+
     // Vision Constants 
     public static final double VISION_STEER_kP = 0.018; //0.024; //0.018; //0.02; //kU = 0.04
     public static final double VISION_STEER_kI = 0.0216 * 1.01;   //0.048; //0.0216;
@@ -159,8 +153,4 @@ public class RobotConstants {
     public static final double CAMERA_HEIGHTFROMGROUND = Units.inchesToMeters(15.6); // meters // OLD 11.25 inches
     public static final double CAMERA_ANGLEFROMPARALLEL = Units.degreesToRadians(19.01); // radians
     public static final double TARGET_HEIGHTFROMGROUND = Units.inchesToMeters(91.5); // meters (7 ft 10.75 in, direct center of trapezoid)
-    
-    // public static final double CAMERAXOFFSET = 0;
-    // public static final double CAMERAYOFFSET = 0;
-    // public static final double CAMERAYAWANGLEDEGREES = 0;
 }
