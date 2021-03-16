@@ -209,4 +209,12 @@ public class RobotContainer {
 		drivetrain.drive(DriveSignal.NEUTRAL);
 	}
 	
+	public void stopAll() {
+		CommandScheduler.getInstance().cancelAll();
+		shooter.slowDown();
+		intakeArm.intakeBall(0, false);
+		vision.disableTracking();
+		drivetrain.drive(DriveSignal.NEUTRAL);
+	}
+	
 }
