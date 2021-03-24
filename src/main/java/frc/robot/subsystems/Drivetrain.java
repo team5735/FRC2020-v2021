@@ -100,6 +100,9 @@ public class Drivetrain extends SubsystemBase {
 		double[] distance = getDtDistance();
 		// Update the odometry in the periodic block
 		m_odometry.update(getGyroRotation(), distance[0], distance[1]);
+
+		double normalVel = Units.dtRotationsToMeters(Units.dtTickstoRotations(normalMaster.getSelectedSensorVelocity() * 10));
+		SmartDashboard.putNumber("DT Normal Vel", normalVel);
 	}
 	
 	/**
@@ -168,7 +171,11 @@ public class Drivetrain extends SubsystemBase {
 		SmartDashboard.putNumber("right volts", rightVolts);
 
 		double batteryVolt = RobotController.getBatteryVoltage();
-		drive(ControlMode.PercentOutput, leftVolts / batteryVolt, rightVolts / batteryVolt, 0);
+		leftMaster.set(ControlMode.PercentOutput, leftVolts / batteryVolt);
+		rightMaster.set(ControlMode.PercentOutput, rightVolts / batteryVolt);
+		normalMaster.set(ControlMode.Velocity, 0);
+
+		// drive(ControlMode.PercentOutput, leftVolts / batteryVolt, rightVolts / batteryVolt, 0);
 	}
 	
 	/**
