@@ -22,11 +22,14 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.controllers.BobXboxController;
 import frc.lib.util.DriveSignal;
 import frc.robot.commandgroups.SixBallAutoCommand;
+import frc.robot.commandgroups.TurnAndShootCommandSemiAuto;
 import frc.robot.commands.intake.AngleIntakeCommand;
 import frc.robot.commands.intake.FeedShooterCommand;
 import frc.robot.commands.intake.IntakeBallCommand;
@@ -117,10 +120,10 @@ public class RobotContainer {
 		subsystemController.Dpad.Up.whenPressed(new RampShooterCommand(shooter, vision, banana, feeder, 3600.00));
 		subsystemController.Dpad.Down.whenPressed(new RampShooterCommand(shooter, vision, banana, feeder, 0.0));
 		
-		subsystemController.aButton.whenPressed(new InstantCommand(vision::getDistanceToTarget, vision));
+		// subsystemController.aButton.whenPressed(new InstantCommand(vision::getDistanceToTarget, vision));
 		subsystemController.bButton.whenPressed(new InstantCommand(vision::disableTracking, vision));
-		
-		// subsystemController.aButton.whenPressed(new TurnAndShootCommandSemiAuto(vision, drivetrain, feeder, conveyor, intakeArm , shooter, banana));
+
+		subsystemController.aButton.whenPressed(new TurnAndShootCommandSemiAuto(vision, drivetrain, feeder, conveyor, intakeArm , shooter, banana));
 		// subsystemController.aButton.whenPressed(new MoveBananaCommand(banana, 1000));
 		// subsystemController.bButton.whenPressed(new MoveBananaCommand(banana, 2500));
 		// subsystemController.bButton.whileHeld(new WinchMoveCommand(winch));
@@ -172,6 +175,16 @@ public class RobotContainer {
 			String fileName = chosenAutoFiles[i];
 			Trajectory traj = TrajectoryGenerator.readPathweaverJSON(autoPath + "/" + fileName); // e.g. straight/Straight.wpilib.json
 			commandList[i] = (getRamseteCommand(traj));
+		}
+
+		if(autoPath.equals("galactica") || autoPath.equals("galacticb")) { 
+			return new ParallelDeadlineGroup(
+				new SequentialCommandGroup(commandList),
+				new ParallelCommandGroup(
+					new IntakeBallCommand(intakeArm, 0.3, false),
+					new MoveConveyorCommand(conveyor, feeder, shooter, 0.3, false)
+				) 
+			);
 		}
 
 		return new SequentialCommandGroup(commandList);

@@ -153,9 +153,10 @@ public class Drivetrain extends SubsystemBase {
 	 * @param normal
 	 */
 	public void drive(ControlMode controlMode, double left, double right, double normal) {
-		leftMaster.set(controlMode, left);
-		rightMaster.set(controlMode, right);
-		normalMaster.set(controlMode, normal);
+		leftMaster.set(controlMode, left * 0.8);
+		rightMaster.set(controlMode, right * 0.8);
+		// normalMaster.set(controlMode, normal);
+		normalMaster.set(ControlMode.Velocity, 0);
 //THIS IS AWESOME!!!! --> Mingle is a nerdddddddddddd
 		SmartDashboard.putNumber("True Gyro Heading", getHeading());
 	}
